@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { likeDb } from '@/lib/database-pg';
-import { getCurrentUser } from '@/lib/auth';
+import { likeDb } from '@/lib/database-supabase';
+import { getCurrentUser } from '@/lib/auth-supabase';
 
 // 切换点赞状态
 export async function POST(request: NextRequest) {

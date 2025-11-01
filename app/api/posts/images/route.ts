@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
-import { getCurrentUser } from '@/lib/auth';
+import { createSupabaseServerClient } from '@/lib/supabase';
+import { getCurrentUser } from '@/lib/auth-supabase';
 
 export async function POST(request: NextRequest) {
     try {
@@ -24,37 +24,53 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 在实际应用中，这里应该将文件上传到云存储（如AWS S3）
-        // 这里我们只是创建一个记录在数据库中
-        const db = getDb();
+        const supabase = await createSupabaseServerClient();
+        const fileName = `${Date.now()}-${file.name}`;
+        const filePath = `posts/${postId}/${fileName}`;
 
-        // 创建图片记录
-        db.run(
-            'INSERT INTO post_images (post_id, image_url, alt_text, sort_order) VALUES (?, ?, ?, ?)',
-            [postId, `/uploads/${Date.now()}-${file.name}`, file.name, 0],
-            function(err) {
-                if (err) {
-                    console.error('保存图片失败:', err);
-                }
-            }
-        );
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('posts')
+            .upload(filePath, file);
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        const { data: urlData } = supabase.storage
+            .from('posts')
+            .getPublicUrl(filePath);
+
+        const { data: imageRecord, error: dbError } = await supabase
+            .from('post_images')
+            .insert({
+                post_id: parseInt(postId),
+                image_url: urlData.publicUrl,
+                alt_text: file.name,
+                sort_order: 0
+            })
+            .select()
+            .single();
+
+        if (dbError) {
+            throw dbError;
+        }
 
         return NextResponse.json({
             success: true,
             message: '图片上传成功',
             data: {
-                id: this.lastID,
+                id: imageRecord.id,
                 filename: file.name,
                 size: file.size,
                 type: file.type,
-                url: `/uploads/${Date.now()}-${file.name}`
+                url: urlData.publicUrl
             }
         });
 
     } catch (error: any) {
         console.error('图片上传失败:', error);
         return NextResponse.json(
-            { error: '图片上传失败' },
+            { error: error.message || '图片上传失败' },
             { status: 500 }
         );
     }

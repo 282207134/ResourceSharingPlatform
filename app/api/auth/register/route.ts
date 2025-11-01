@@ -1,26 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import { userDb } from '@/lib/database';
-import { createSession } from '@/lib/auth';
-
-// 验证函数
-function validateUsername(username: string): boolean {
-    return /^[a-zA-Z0-9_]{3,20}$/.test(username);
-}
-
-function validateEmail(email: string): boolean {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function validatePassword(password: string): boolean {
-    return password.length >= 6;
-}
+import { userDb } from '@/lib/database-supabase';
+import { signUp, validateEmail, validateUsername, validatePassword } from '@/lib/auth-supabase';
 
 export async function POST(request: NextRequest) {
     try {
         const { username, email, password, confirmPassword } = await request.json();
 
-        // 验证输入
         if (!username || !email || !password || !confirmPassword) {
             return NextResponse.json(
                 { error: '所有字段都是必填的' },
@@ -56,7 +41,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 检查用户名和邮箱是否已存在
         const existingUserByUsername = await userDb.findByUsername(username);
         if (existingUserByUsername) {
             return NextResponse.json(
@@ -73,20 +57,15 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // 加密密码 - 已在createUser中处理
-
-        // 创建用户
-        const newUser = await userDb.createUser(username, email, password);
-        
-        // 创建会话
-        await createSession(newUser);
+        const newUser = await signUp(email, password, username);
 
         return NextResponse.json({
             message: '注册成功',
-            userInfo: {
+            user: {
                 id: newUser.id,
                 username: newUser.username,
                 email: newUser.email,
+                role: newUser.role || 'user',
                 points: newUser.points
             }
         });
