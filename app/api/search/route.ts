@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { postDb, resourceDb } from '@/lib/database-pg';
+import { postDb, resourceDb } from '@/lib/database-supabase';
 
 // 全局搜索
 export async function GET(request: NextRequest) {

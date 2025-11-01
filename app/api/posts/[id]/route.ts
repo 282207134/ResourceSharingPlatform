@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { postDb } from '@/lib/database-pg';
-import { getCurrentUser } from '@/lib/auth';
+import { postDb } from '@/lib/database-supabase';
+import { getCurrentUser } from '@/lib/auth-supabase';
 
 // 获取帖子详情
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest) {
     try {
-        const postId = parseInt(params.id);
+        const segments = request.nextUrl.pathname.split('/');
+        const idSegment = segments[segments.length - 1];
+        const postId = parseInt(idSegment);
         if (isNaN(postId)) {
             return NextResponse.json(
                 { error: '无效的帖子ID' },
@@ -41,11 +40,12 @@ export async function GET(
 }
 
 // 更新帖子
-export async function PUT(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest) {
     try {
+        const segments = request.nextUrl.pathname.split('/');
+        const idSegment = segments[segments.length - 1];
+        const postId = parseInt(idSegment);
+        
         const user = await getCurrentUser();
         if (!user) {
             return NextResponse.json(
@@ -54,7 +54,6 @@ export async function PUT(
             );
         }
 
-        const postId = parseInt(params.id);
         if (isNaN(postId)) {
             return NextResponse.json(
                 { error: '无效的帖子ID' },
@@ -115,11 +114,12 @@ export async function PUT(
 }
 
 // 删除帖子
-export async function DELETE(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest) {
     try {
+        const segments = request.nextUrl.pathname.split('/');
+        const idSegment = segments[segments.length - 1];
+        const postId = parseInt(idSegment);
+        
         const user = await getCurrentUser();
         if (!user) {
             return NextResponse.json(
@@ -128,7 +128,6 @@ export async function DELETE(
             );
         }
 
-        const postId = parseInt(params.id);
         if (isNaN(postId)) {
             return NextResponse.json(
                 { error: '无效的帖子ID' },

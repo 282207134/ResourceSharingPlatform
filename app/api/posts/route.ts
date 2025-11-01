@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { postDb } from '@/lib/database-pg';
-import { getCurrentUser } from '@/lib/auth';
+import { postDb } from '@/lib/database-supabase';
+import { getCurrentUser } from '@/lib/auth-supabase';
 
 // 获取帖子列表
 export async function GET(request: NextRequest) {
@@ -9,18 +9,18 @@ export async function GET(request: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '20');
         const category_id = searchParams.get('category_id') ? parseInt(searchParams.get('category_id')!) : undefined;
-        const author_id = searchParams.get('author_id') ? parseInt(searchParams.get('author_id')!) : undefined;
+        const author_id = searchParams.get('author_id') || undefined;
         const search = searchParams.get('search') || undefined;
         const sort = (searchParams.get('sort') as 'latest' | 'popular' | 'views') || 'latest';
 
-        const posts = await postDb.getList({
+        const posts = (await postDb.getList({
             page,
             limit,
             category_id,
             author_id,
             search,
             sort
-        });
+        })) || [];
 
         return NextResponse.json({
             success: true,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { categoryDb } from '@/lib/database-pg';
+import { categoryDb } from '@/lib/database-supabase';
 
 // 获取所有分类
 export async function GET(request: NextRequest) {

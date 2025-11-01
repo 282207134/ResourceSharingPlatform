@@ -7,10 +7,18 @@ interface RechargeCenterProps {
     onRecharge: (amount: number, points: number) => void;
 }
 
-export default function RechargeCenter({ userPoints, onRecharge }: RechargeCenterProps) {
-    const [selectedPackage, setSelectedPackage] = useState(null);
+type RechargePackage = {
+    id: number;
+    amount: number;
+    points: number;
+    bonus: number;
+    isPopular: boolean;
+};
 
-    const rechargePackages = [
+export default function RechargeCenter({ userPoints, onRecharge }: RechargeCenterProps) {
+    const [selectedPackage, setSelectedPackage] = useState<RechargePackage | null>(null);
+
+    const rechargePackages: RechargePackage[] = [
         { id: 1, amount: 10, points: 100, bonus: 0, isPopular: false },
         { id: 2, amount: 20, points: 240, bonus: 40, isPopular: false },
         { id: 3, amount: 50, points: 700, bonus: 200, isPopular: true },

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logout } from '@/lib/auth';
+import { signOut } from '@/lib/auth-supabase';
 
 export async function POST(request: NextRequest) {
     try {
-        await logout();
+        await signOut();
         
         return NextResponse.json({
             message: '登出成功'
