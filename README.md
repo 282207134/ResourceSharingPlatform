@@ -36,3 +36,7 @@ Open [http://localhost:3000](http://localhost:3000) in Onlook to see the result.
 ## Backend: Supabase
 
 This project has been fully migrated to use Supabase as the backend. For detailed setup and configuration instructions, please read [README-SUPABASE.md](./README-SUPABASE.md).
+
+### User roles
+
+The platform now supports **admin** and **user** roles. Check out [USER-ROLES-GUIDE.md](./USER-ROLES-GUIDE.md) to learn how to promote/demote users and manage permissions.

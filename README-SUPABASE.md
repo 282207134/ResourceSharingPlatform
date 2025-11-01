@@ -62,7 +62,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=你的_supabase_anon_key
    - `resources` - 资源文件
 3. 为每个存储桶配置访问策略
 
-### 7. 启动应用
+### 7. 设置第一个管理员用户（重要）
+
+注册第一个用户后，需要将其设为管理员：
+
+1. 在 Supabase 仪表板，点击 **SQL Editor**
+2. 查找刚注册的用户 ID：
+   ```sql
+   SELECT id, username, email, role FROM public.users ORDER BY created_at LIMIT 1;
+   ```
+3. 设置为管理员：
+   ```sql
+   UPDATE public.users SET role = 'admin' WHERE id = '你的用户ID';
+   ```
+
+详细说明请参考 [USER-ROLES-GUIDE.md](./USER-ROLES-GUIDE.md)
+
+### 8. 启动应用
 
 ```bash
 npm install
@@ -169,12 +185,15 @@ npm run dev
 如果遇到 "row-level security policy" 错误：
 - 检查是否正确执行了 `supabase-schema.sql`
 - 确认用户已登录（某些操作需要认证）
+- 如果是管理员功能，请确认当前登录用户的 `role` 为 `admin`
 
 ## 更多资源
 
 - [Supabase 官方文档](https://supabase.com/docs)
 - [Supabase JavaScript 客户端](https://supabase.com/docs/reference/javascript)
 - [Next.js + Supabase 教程](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs)
+- [USER-ROLES-GUIDE.md](./USER-ROLES-GUIDE.md) - 用户角色管理指南
+- [UPGRADE-EXISTING-DATABASE.md](./UPGRADE-EXISTING-DATABASE.md) - 老项目升级步骤
 
 ## 支持
 

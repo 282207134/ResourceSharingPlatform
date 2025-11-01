@@ -1,5 +1,4 @@
 import { createSupabaseServerClient } from './supabase';
-import bcrypt from 'bcryptjs';
 
 export interface User {
   id: string;
@@ -8,6 +7,7 @@ export interface User {
   points: number;
   avatar_url?: string | null;
   bio?: string | null;
+  role?: 'user' | 'admin';
   is_verified?: boolean;
   is_premium?: boolean;
   created_at?: string;
@@ -15,7 +15,7 @@ export interface User {
 }
 
 export const userDb = {
-  async createUser(username: string, email: string, password: string) {
+  async createUser(username: string, email: string, password: string, role: 'user' | 'admin' = 'user') {
     const supabase = await createSupabaseServerClient();
     
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -37,6 +37,7 @@ export const userDb = {
         id: authData.user.id,
         username,
         email,
+        role,
         points: 100,
       })
       .select()
@@ -137,6 +138,43 @@ export const userDb = {
       likes_received: likesReceived,
       followers_count: 0,
     };
+  },
+
+  async updateRole(userId: string, role: 'user' | 'admin') {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from('users')
+      .update({ role })
+      .eq('id', userId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async listUsers(options: {
+    page?: number;
+    limit?: number;
+    role?: 'user' | 'admin';
+  } = {}) {
+    const { page = 1, limit = 50, role } = options;
+    const supabase = await createSupabaseServerClient();
+    const offset = (page - 1) * limit;
+
+    let query = supabase
+      .from('users')
+      .select('id, username, email, role, points, is_verified, is_premium, created_at')
+      .range(offset, offset + limit - 1)
+      .order('created_at', { ascending: false });
+
+    if (role) {
+      query = query.eq('role', role);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
   },
 };
 

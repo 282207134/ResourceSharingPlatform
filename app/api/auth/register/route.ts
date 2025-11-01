@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
                 id: newUser.id,
                 username: newUser.username,
                 email: newUser.email,
+                role: newUser.role || 'user',
                 points: newUser.points
             }
         });

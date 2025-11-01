@@ -70,18 +70,30 @@ npm run dev
 
 ## 验证安装
 
-### 测试数据库连接
+### 1. 创建首个管理员账号（必需）
+
+1. 在前端注册第一个用户
+2. 打开 Supabase SQL Editor，执行：
+   ```sql
+   SELECT id, username, email FROM public.users ORDER BY created_at LIMIT 1;
+   UPDATE public.users SET role = 'admin' WHERE id = '上述查询结果中的ID';
+   ```
+3. 重新登录该用户，即可获得管理员权限
+
+详细步骤请查看 [USER-ROLES-GUIDE.md](./USER-ROLES-GUIDE.md)
+
+### 2. 测试数据库连接
 
 1. 打开应用
 2. 尝试注册一个新账户
 3. 如果注册成功，说明 Supabase 配置正确
 
-### 检查数据
+### 3. 检查数据
 
 在 Supabase 仪表板：
 1. 点击左侧菜单的 **Table Editor** 📊
 2. 应该能看到所有创建的表（users, posts, categories 等）
-3. 点击 **users** 表，应该能看到刚注册的用户
+3. 点击 **users** 表，确认新用户的 `role` 字段为 `user`
 
 ## 常见问题
 

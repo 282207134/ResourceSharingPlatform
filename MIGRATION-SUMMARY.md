@@ -77,24 +77,39 @@
 3. **`lib/auth-supabase.ts`**
    - 认证函数: signIn, signUp, signOut, getCurrentUser
    - 验证函数: validateEmail, validateUsername, validatePassword
+   - 权限检查函数: isAdmin, requireAdmin
 
 4. **`supabase-schema.sql`**
    - 完整的数据库架构
    - 表、索引、触发器定义
-   - RLS 策略配置
+   - RLS 策略配置（含管理员策略）
    - RPC 函数（用于计数器更新）
    - 默认分类数据
+   - 用户角色系统 (role: 'user' | 'admin')
 
 5. **`README-SUPABASE.md`**
    - Supabase 详细设置指南
    - 配置步骤
    - 故障排除
    - 最佳实践
+   - 管理员设置说明
 
-6. **`.env.example`**
+6. **`USER-ROLES-GUIDE.md`**
+   - 用户角色管理完整指南
+   - 管理员权限设置方法
+   - API 使用示例
+   - 前后端权限控制
+
+7. **`UPGRADE-EXISTING-DATABASE.md`**
+   - 现有数据库升级指南
+   - 如何添加 role 字段
+   - RLS 策略升级
+   - 验证与回滚步骤
+
+8. **`.env.example`**
    - 环境变量模板
 
-7. **`MIGRATION-SUMMARY.md`** (本文件)
+9. **`MIGRATION-SUMMARY.md`** (本文件)
    - 迁移完成总结
 
 ## 更新文件
@@ -104,6 +119,8 @@
 - `app/api/auth/login/route.ts` - 使用 Supabase Auth 登录
 - `app/api/auth/logout/route.ts` - 使用 Supabase Auth 登出
 - `app/api/auth/me/route.ts` - 从 Supabase 获取当前用户
+- `app/api/admin/users/route.ts` - ⭐ 新增：获取用户列表（管理员）
+- `app/api/admin/users/[id]/role/route.ts` - ⭐ 新增：修改用户角色（管理员）
 - `app/api/posts/route.ts` - 使用 Supabase 的帖子 CRUD
 - `app/api/posts/[id]/route.ts` - 帖子详情、更新、删除
 - `app/api/posts/images/route.ts` - 使用 Supabase Storage 上传图片
@@ -112,7 +129,7 @@
 - `app/api/search/route.ts` - 搜索功能
 
 ### 前端
-- `hooks/useAuth.tsx` - 更新 User 接口（id 改为 string）
+- `hooks/useAuth.tsx` - 更新 User 接口（id 改为 string，并包含 role 字段）
 
 ### 配置
 - `package.json` - 添加 Supabase 依赖，移除旧依赖

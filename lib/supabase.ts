@@ -45,6 +45,7 @@ export type Database = {
           points: number;
           avatar_url: string | null;
           bio: string | null;
+          role: 'user' | 'admin';
           is_verified: boolean;
           is_premium: boolean;
           created_at: string;
@@ -57,6 +58,7 @@ export type Database = {
           points?: number;
           avatar_url?: string | null;
           bio?: string | null;
+          role?: 'user' | 'admin';
           is_verified?: boolean;
           is_premium?: boolean;
           created_at?: string;
@@ -69,6 +71,7 @@ export type Database = {
           points?: number;
           avatar_url?: string | null;
           bio?: string | null;
+          role?: 'user' | 'admin';
           is_verified?: boolean;
           is_premium?: boolean;
           created_at?: string;

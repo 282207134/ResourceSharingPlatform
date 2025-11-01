@@ -8,6 +8,7 @@ export interface User {
     email: string;
     points: number;
     avatar_url?: string | null;
+    role?: 'user' | 'admin';
     is_verified?: boolean;
     is_premium?: boolean;
 }

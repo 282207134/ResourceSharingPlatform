@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS public.users (
     points INTEGER DEFAULT 0,
     avatar_url VARCHAR(500),
     bio TEXT,
+    role VARCHAR(20) DEFAULT 'user' CHECK (role IN ('user', 'admin')),
     is_verified BOOLEAN DEFAULT FALSE,
     is_premium BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -335,6 +336,29 @@ CREATE POLICY "Public comments are viewable by everyone" ON public.comments
 
 CREATE POLICY "Users can view their own data" ON public.users
     FOR SELECT USING (auth.uid() = id);
+
+-- RLS 策略：管理员可以查看所有用户数据
+CREATE POLICY "Admins can view all users" ON public.users
+    FOR SELECT USING (
+        EXISTS (
+            SELECT 1 FROM public.users
+            WHERE id = auth.uid() AND role = 'admin'
+        )
+    );
+
+-- RLS 策略：管理员可以更新任何用户的角色
+CREATE POLICY "Admins can update any user" ON public.users
+    FOR UPDATE USING (
+        EXISTS (
+            SELECT 1 FROM public.users
+            WHERE id = auth.uid() AND role = 'admin'
+        )
+    ) WITH CHECK (
+        EXISTS (
+            SELECT 1 FROM public.users
+            WHERE id = auth.uid() AND role = 'admin'
+        )
+    );
 
 -- RLS 策略：用户可以创建自己的内容
 CREATE POLICY "Users can insert their own posts" ON public.posts

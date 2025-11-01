@@ -6,6 +6,7 @@ export interface User {
   email: string;
   points: number;
   avatar_url?: string;
+  role?: 'user' | 'admin';
   is_verified?: boolean;
   is_premium?: boolean;
 }
@@ -36,6 +37,7 @@ export async function getCurrentUser(): Promise<User | null> {
       email: userData.email,
       points: userData.points,
       avatar_url: userData.avatar_url,
+      role: userData.role,
       is_verified: userData.is_verified,
       is_premium: userData.is_premium,
     };
@@ -86,6 +88,7 @@ export async function signUp(email: string, password: string, username: string) 
       id: authData.user.id,
       username,
       email,
+      role: 'user',
       points: 100,
     })
     .select()
@@ -130,4 +133,20 @@ export function validateUsername(username: string): boolean {
 
 export function validatePassword(password: string): boolean {
   return password.length >= 6;
+}
+
+export async function isAdmin(): Promise<boolean> {
+  const user = await getCurrentUser();
+  return user?.role === 'admin';
+}
+
+export async function requireAdmin(): Promise<User> {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error('未登录');
+  }
+  if (user.role !== 'admin') {
+    throw new Error('需要管理员权限');
+  }
+  return user;
 }
