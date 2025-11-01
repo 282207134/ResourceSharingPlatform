@@ -6,6 +6,7 @@ import CategoryGrid from '../components/CategoryGrid';
 import PostCreator from '../components/PostCreator';
 import ResourceDetail from '../components/ResourceDetail';
 import CustomerService from '../components/CustomerService';
+import Sidebar from '../components/Sidebar';
 import RechargeCenter from '../components/RechargeCenter';
 import AutoRecharge from '../components/AutoRecharge';
 import PointsHistory from '../components/PointsHistory';
@@ -230,8 +231,31 @@ export default function Page() {
 
     // 处理分类点击
     const handleCategoryClick = (category: any) => {
+        setActiveTab('home');
         setSelectedCategory(category);
         setCurrentView('category-detail');
+    };
+
+    const handlePointsHistoryView = () => {
+        setActiveTab('home');
+        setCurrentView('points-history');
+    };
+
+    const handleMessageCenterView = () => {
+        setActiveTab('home');
+        setCurrentView('message-center');
+    };
+
+    const handleCustomerServiceView = () => {
+        setActiveTab('customer-service');
+    };
+
+    const handleRechargeCenterView = () => {
+        setActiveTab('recharge-center');
+    };
+
+    const handleAutoRechargeView = () => {
+        setActiveTab('auto-recharge');
     };
 
     // 返回分类列表
@@ -401,14 +425,14 @@ export default function Page() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 rounded-none">
+        <div className="min-h-screen bg-gray-50">
             {/* Header */}
             <Header onLoginClick={() => setIsAuthModalOpen(true)} />
 
             {/* Navigation */}
             <nav className="bg-blue-600 text-white">
                 <div className="container mx-auto px-4">
-                    <div className="flex space-x-8 h-[40px]">
+                    <div className="flex flex-wrap gap-2 md:gap-4 lg:space-x-8 py-2 md:py-0 min-h-[40px] items-center">
                         {[
                             { key: 'home', label: '主页首页' },
                             { key: 'customer-service', label: '客服中心' },
@@ -423,7 +447,7 @@ export default function Page() {
                                         handleBackToCategories();
                                     }
                                 }}
-                                className={`py-3 px-2 border-b-2 transition-colors ${
+                                className={`py-2 px-3 md:py-3 md:px-4 border-b-2 transition-colors rounded-t-lg text-sm md:text-base ${
                                     activeTab === tab.key
                                         ? 'border-white bg-blue-700'
                                         : 'border-transparent hover:bg-blue-700'
@@ -439,18 +463,18 @@ export default function Page() {
             {/* Search Bar */}
             <div className="bg-white border-b">
                 <div className="container mx-auto px-4 py-3">
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center gap-2 md:gap-4">
                         <input
                             type="text"
                             placeholder="搜索知识内容..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="flex-1 px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
                         />
 
                         <button
                             onClick={handleSearch}
-                            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+                            className="bg-blue-500 text-white px-4 md:px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm md:text-base whitespace-nowrap"
                         >
                             搜索
                         </button>
@@ -458,10 +482,10 @@ export default function Page() {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-6">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="container mx-auto px-4 py-4 md:py-6">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
                     {/* Main Content */}
-                    <div className="lg:col-span-3">
+                    <div className="lg:col-span-3 w-full min-w-0">
                         {activeTab === 'home' && currentView === 'categories' ? (
                             <>
                                 {/* Points Notice */}
@@ -476,13 +500,13 @@ export default function Page() {
                             <>
                                 {/* Category Detail View */}
                                 <div className="mb-4">
-                                    <div className="flex items-center justify-between mb-4">
+                                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
                                         <button
                                             onClick={handleBackToCategories}
-                                            className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+                                            className="flex items-center space-x-2 text-blue-600 hover:text-blue-800 text-sm md:text-base"
                                         >
                                             <svg
-                                                className="w-5 h-5"
+                                                className="w-4 h-4 md:w-5 md:h-5"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -498,24 +522,24 @@ export default function Page() {
                                         </button>
                                         <button
                                             onClick={handleCreatePost}
-                                            className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 flex items-center space-x-2"
+                                            className="bg-green-500 text-white px-4 md:px-6 py-2 rounded-lg hover:bg-green-600 flex items-center space-x-2 transition-colors text-sm md:text-base"
                                         >
                                             <span>✏️</span>
                                             <span>发布资源</span>
                                         </button>
                                     </div>
-                                    <div className="bg-white rounded-lg shadow p-6">
-                                        <div className="flex items-center space-x-4 mb-4">
+                                    <div className="bg-white rounded-lg shadow p-4 md:p-6">
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                                             <div
-                                                className={`w-16 h-16 ${selectedCategory?.color} rounded-lg flex items-center justify-center text-white text-2xl`}
+                                                className={`w-12 h-12 md:w-16 md:h-16 ${selectedCategory?.color} rounded-lg flex items-center justify-center text-white text-xl md:text-2xl`}
                                             >
                                                 {selectedCategory?.icon}
                                             </div>
                                             <div>
-                                                <h1 className="text-2xl font-bold text-gray-800">
+                                                <h1 className="text-xl md:text-2xl font-bold text-gray-800">
                                                     {selectedCategory?.name}
                                                 </h1>
-                                                <p className="text-gray-600">
+                                                <p className="text-gray-600 text-sm md:text-base">
                                                     {selectedCategory?.description}
                                                 </p>
                                             </div>
@@ -533,12 +557,12 @@ export default function Page() {
                                 {/* Empty State */}
                                 {(!categoryResources[selectedCategory?.id] ||
                                     categoryResources[selectedCategory?.id].length === 0) && (
-                                    <div className="bg-white rounded-lg shadow p-12 text-center">
-                                        <div className="text-gray-400 text-6xl mb-4">📁</div>
-                                        <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                                    <div className="bg-white rounded-lg shadow p-8 md:p-12 text-center">
+                                        <div className="text-gray-400 text-4xl md:text-6xl mb-4">📁</div>
+                                        <h3 className="text-lg md:text-xl font-semibold text-gray-600 mb-2">
                                             暂无资源
                                         </h3>
-                                        <p className="text-gray-500">
+                                        <p className="text-gray-500 text-sm md:text-base">
                                             该分类下暂时没有资源，请稍后再来查看
                                         </p>
                                     </div>
@@ -569,9 +593,42 @@ export default function Page() {
                                 onPurchase={handleResourcePurchase}
                             />
                         )}
+                        {currentView === 'points-history' && (
+                            <PointsHistory
+                                userPoints={userPoints}
+                                onClose={handleCloseModal}
+                            />
+                        )}
+                        {currentView === 'message-center' && (
+                            <MessageCenter onClose={handleCloseModal} />
+                        )}
                     </div>
 
                     {/* Sidebar */}
+                    <aside className="hidden lg:block lg:col-span-1">
+                        <Sidebar
+                            userPoints={userPoints}
+                            categories={resourceCategories}
+                            onCategoryClick={handleCategoryClick}
+                            onPointsHistoryClick={handlePointsHistoryView}
+                            onMessageCenterClick={handleMessageCenterView}
+                            onCustomerServiceClick={handleCustomerServiceView}
+                            onRechargeCenterClick={handleRechargeCenterView}
+                        />
+                    </aside>
+                </div>
+
+                {/* Mobile Sidebar */}
+                <div className="lg:hidden mt-4">
+                    <Sidebar
+                        userPoints={userPoints}
+                        categories={resourceCategories}
+                        onCategoryClick={handleCategoryClick}
+                        onPointsHistoryClick={handlePointsHistoryView}
+                        onMessageCenterClick={handleMessageCenterView}
+                        onCustomerServiceClick={handleCustomerServiceView}
+                        onRechargeCenterClick={handleRechargeCenterView}
+                    />
                 </div>
             </div>
 

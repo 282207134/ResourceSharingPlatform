@@ -17,50 +17,52 @@ interface CategoryListProps {
 
 export default function CategoryList({ categories, onCategoryClick }: CategoryListProps) {
     return (
-        <div className="bg-white rounded-lg shadow">
-            <div className="p-4 border-b w-[1008px] h-[130px]">
-                <h2 className="text-xl font-bold text-gray-800">资源分类导航</h2>
-                <p className="text-gray-600 text-sm mt-1 h-[12px]">选择您感兴趣的资源分类</p>
+        <div className="bg-white rounded-lg shadow w-full">
+            <div className="p-4 md:p-6 border-b">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800">资源分类导航</h2>
+                <p className="text-gray-600 text-sm mt-1">选择您感兴趣的资源分类</p>
             </div>
 
             <div className="divide-y">
                 {categories.map((category) => (
                     <div
                         key={category.id}
-                        className="p-4 hover:bg-gray-50 cursor-pointer transition-colors rounded-[41px] h-[85px] w-[843px]"
+                        className="p-4 md:p-6 hover:bg-gray-50 cursor-pointer transition-colors"
                         onClick={() => onCategoryClick(category)}
                     >
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-4">
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-center space-x-3 md:space-x-4 flex-1 min-w-0">
                                 <div
-                                    className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center text-white text-xl`}
+                                    className={`w-10 h-10 md:w-12 md:h-12 ${category.color} rounded-lg flex items-center justify-center text-white text-lg md:text-xl flex-shrink-0`}
                                 >
                                     {category.icon}
                                 </div>
-                                <div>
-                                    <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-1 truncate">
                                         {category.name}
                                     </h3>
-                                    <p className="text-gray-600 text-sm">{category.description}</p>
+                                    <p className="text-gray-600 text-xs md:text-sm line-clamp-1">
+                                        {category.description}
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-2 md:space-x-4 flex-shrink-0">
                                 <div className="text-right">
                                     <div className="flex items-center space-x-2">
-                                        <div className="text-lg font-bold text-blue-600">
+                                        <div className="text-base md:text-lg font-bold text-blue-600">
                                             {category.count}
                                         </div>
                                         {category.newCount > 0 && (
-                                            <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                            <div className="bg-red-500 text-white text-xs px-1.5 md:px-2 py-0.5 md:py-1 rounded-full whitespace-nowrap">
                                                 {category.newCount} 新
                                             </div>
                                         )}
                                     </div>
-                                    <div className="text-sm text-gray-500">个资源</div>
+                                    <div className="text-xs md:text-sm text-gray-500">个资源</div>
                                 </div>
-                                <div className="text-gray-400">
+                                <div className="text-gray-400 hidden sm:block">
                                     <svg
-                                        className="w-6 h-6"
+                                        className="w-5 h-5 md:w-6 md:h-6"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
