@@ -6,7 +6,6 @@ import CategoryGrid from '../components/CategoryGrid';
 import PostCreator from '../components/PostCreator';
 import ResourceDetail from '../components/ResourceDetail';
 import CustomerService from '../components/CustomerService';
-import Sidebar from '../components/Sidebar';
 import RechargeCenter from '../components/RechargeCenter';
 import AutoRecharge from '../components/AutoRecharge';
 import PointsHistory from '../components/PointsHistory';
@@ -236,28 +235,6 @@ export default function Page() {
         setCurrentView('category-detail');
     };
 
-    const handlePointsHistoryView = () => {
-        setActiveTab('home');
-        setCurrentView('points-history');
-    };
-
-    const handleMessageCenterView = () => {
-        setActiveTab('home');
-        setCurrentView('message-center');
-    };
-
-    const handleCustomerServiceView = () => {
-        setActiveTab('customer-service');
-    };
-
-    const handleRechargeCenterView = () => {
-        setActiveTab('recharge-center');
-    };
-
-    const handleAutoRechargeView = () => {
-        setActiveTab('auto-recharge');
-    };
-
     // 返回分类列表
     const handleBackToCategories = () => {
         setCurrentView('categories');
@@ -483,9 +460,9 @@ export default function Page() {
             </div>
 
             <div className="container mx-auto px-4 py-4 md:py-6">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="w-full">
                     {/* Main Content */}
-                    <div className="lg:col-span-3 w-full min-w-0">
+                    <div className="w-full min-w-0">
                         {activeTab === 'home' && currentView === 'categories' ? (
                             <>
                                 {/* Points Notice */}
@@ -603,32 +580,6 @@ export default function Page() {
                             <MessageCenter onClose={handleCloseModal} />
                         )}
                     </div>
-
-                    {/* Sidebar */}
-                    <aside className="hidden lg:block lg:col-span-1">
-                        <Sidebar
-                            userPoints={userPoints}
-                            categories={resourceCategories}
-                            onCategoryClick={handleCategoryClick}
-                            onPointsHistoryClick={handlePointsHistoryView}
-                            onMessageCenterClick={handleMessageCenterView}
-                            onCustomerServiceClick={handleCustomerServiceView}
-                            onRechargeCenterClick={handleRechargeCenterView}
-                        />
-                    </aside>
-                </div>
-
-                {/* Mobile Sidebar */}
-                <div className="lg:hidden mt-4">
-                    <Sidebar
-                        userPoints={userPoints}
-                        categories={resourceCategories}
-                        onCategoryClick={handleCategoryClick}
-                        onPointsHistoryClick={handlePointsHistoryView}
-                        onMessageCenterClick={handleMessageCenterView}
-                        onCustomerServiceClick={handleCustomerServiceView}
-                        onRechargeCenterClick={handleRechargeCenterView}
-                    />
                 </div>
             </div>
 
