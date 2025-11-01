@@ -110,40 +110,40 @@ export default function ResourceDetail({
     const canViewContent = !resource.isPremium || isPurchased;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="relative">
                     <img
                         src={resource.thumbnail}
                         alt={resource.title}
-                        className="w-full h-64 object-cover"
+                        className="w-full h-48 md:h-64 object-cover"
                     />
 
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-2 right-2 md:top-4 md:right-4">
                         <button
                             onClick={onClose}
-                            className="bg-black bg-opacity-50 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-70"
+                            className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-opacity-70 text-xl md:text-2xl"
                         >
                             ×
                         </button>
                     </div>
                     {resource.isPremium && (
-                        <div className="absolute top-4 left-4">
-                            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm">
+                        <div className="absolute top-2 left-2 md:top-4 md:left-4">
+                            <span className="bg-red-500 text-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm">
                                 付费内容 - {resource.points} 积分
                             </span>
                         </div>
                     )}
                 </div>
 
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                     {/* Title and Meta */}
-                    <div className="mb-6">
-                        <h1 className="text-3xl font-bold text-gray-800 mb-4">{resource.title}</h1>
+                    <div className="mb-4 md:mb-6">
+                        <h1 className="text-xl md:text-3xl font-bold text-gray-800 mb-3 md:mb-4">{resource.title}</h1>
 
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-6 text-gray-600">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0 mb-4">
+                            <div className="flex flex-wrap items-center gap-3 md:gap-6 text-xs md:text-sm text-gray-600">
                                 <span>作者: {resource.author}</span>
                                 <span>浏览: {resource.views}</span>
                                 <span>
@@ -154,10 +154,10 @@ export default function ResourceDetail({
                                 </span>
                             </div>
 
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center gap-2 md:gap-4">
                                 <button
                                     onClick={handleLike}
-                                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                                    className={`flex items-center space-x-1 md:space-x-2 px-3 md:px-4 py-2 rounded-lg transition-colors text-xs md:text-sm ${
                                         isLiked
                                             ? 'bg-red-100 text-red-600'
                                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -167,25 +167,25 @@ export default function ResourceDetail({
                                     <span>{likesCount}</span>
                                 </button>
 
-                                <button className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                                <button className="flex items-center space-x-1 md:space-x-2 px-3 md:px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 text-xs md:text-sm">
                                     <span>📤</span>
-                                    <span>分享</span>
+                                    <span className="hidden sm:inline">分享</span>
                                 </button>
                             </div>
                         </div>
 
-                        <p className="text-gray-600 text-lg">{resource.description}</p>
+                        <p className="text-gray-600 text-sm md:text-lg">{resource.description}</p>
                     </div>
 
                     {/* Purchase Section */}
                     {resource.isPremium && !isPurchased && (
-                        <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-6 mb-6">
-                            <div className="flex items-center justify-between">
+                        <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-4 md:p-6 mb-6">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-orange-800 mb-2">
+                                    <h3 className="text-base md:text-lg font-semibold text-orange-800 mb-2">
                                         解锁完整内容
                                     </h3>
-                                    <p className="text-orange-700">
+                                    <p className="text-orange-700 text-sm md:text-base">
                                         此内容需要 {resource.points} 积分解锁，您当前有 {userPoints}{' '}
                                         积分
                                     </p>
@@ -193,7 +193,7 @@ export default function ResourceDetail({
                                 <button
                                     onClick={handlePurchase}
                                     disabled={userPoints < resource.points}
-                                    className={`px-6 py-3 rounded-lg font-medium ${
+                                    className={`px-4 md:px-6 py-2.5 md:py-3 rounded-lg font-medium text-sm md:text-base ${
                                         userPoints >= resource.points
                                             ? 'bg-orange-500 text-white hover:bg-orange-600'
                                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
