@@ -8,14 +8,15 @@ This project now uses [Supabase](https://supabase.com/) as the backend, combined
 [Next.js](https://nextjs.org/), [TailwindCSS](https://tailwindcss.com/) and
 [ShadCN](https://ui.shadcn.com).
 
-Before starting the project, configure Supabase environment variables in `.env.local`:
+## ⚡ Quick Setup
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
+1. Create Supabase project at https://supabase.com
+2. Create `.env.local` with your Supabase credentials
+3. Execute `supabase-schema.sql` in Supabase SQL Editor
+4. Create storage buckets: `avatars`, `posts`, `resources`
+5. Run `npm install && npm run dev`
 
-Run the SQL statements in `supabase-schema.sql` via the Supabase SQL editor to create the database schema.
+👉 **Detailed guide**: [SETUP.md](./SETUP.md)
 
 ## Getting Started
 

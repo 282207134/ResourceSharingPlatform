@@ -2,6 +2,8 @@
 
 本项目使用 [Supabase](https://supabase.com) 作为后端（PostgreSQL + 认证 + 存储）。
 
+> 💡 **新手推荐**：请先查看 [SETUP.md](./SETUP.md) 获取最简单的设置步骤
+
 ## 快速开始
 
 ### 1. 创建 Supabase 项目
